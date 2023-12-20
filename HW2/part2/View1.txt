@@ -1,0 +1,325 @@
+[mandelbrot serial]:		[459.884] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[456.121] ms
+thread : 0, 		[456.102] ms
+thread : 0, 		[455.860] ms
+thread : 0, 		[455.440] ms
+thread : 0, 		[456.261] ms
+[mandelbrot thread]:		[455.444] ms
+Wrote image file mandelbrot-thread.ppm
+				(1.01x speedup from 1 threads)
+[mandelbrot serial]:		[819.953] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[413.417] ms
+thread : 1, 		[416.343] ms
+thread : 1, 		[412.782] ms
+thread : 0, 		[412.959] ms
+thread : 0, 		[414.283] ms
+thread : 1, 		[419.034] ms
+thread : 1, 		[419.994] ms
+thread : 0, 		[424.201] ms
+thread : 1, 		[420.175] ms
+thread : 0, 		[422.161] ms
+[mandelbrot thread]:		[413.018] ms
+Wrote image file mandelbrot-thread.ppm
+				(1.99x speedup from 2 threads)
+[mandelbrot serial]:		[454.189] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[153.461] ms
+thread : 2, 		[156.152] ms
+thread : 1, 		[156.553] ms
+thread : 2, 		[154.416] ms
+thread : 0, 		[154.609] ms
+thread : 1, 		[154.945] ms
+thread : 1, 		[153.530] ms
+thread : 0, 		[153.634] ms
+thread : 2, 		[157.115] ms
+thread : 0, 		[154.833] ms
+thread : 1, 		[156.181] ms
+thread : 2, 		[158.370] ms
+thread : 2, 		[155.242] ms
+thread : 0, 		[155.277] ms
+thread : 1, 		[156.943] ms
+[mandelbrot thread]:		[154.998] ms
+Wrote image file mandelbrot-thread.ppm
+				(2.93x speedup from 3 threads)
+[mandelbrot serial]:		[898.312] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[229.007] ms
+thread : 1, 		[229.566] ms
+thread : 3, 		[241.143] ms
+thread : 2, 		[249.321] ms
+thread : 3, 		[230.221] ms
+thread : 0, 		[230.512] ms
+thread : 1, 		[240.289] ms
+thread : 2, 		[248.115] ms
+thread : 3, 		[230.287] ms
+thread : 0, 		[230.459] ms
+thread : 1, 		[236.460] ms
+thread : 2, 		[244.548] ms
+thread : 1, 		[230.314] ms
+thread : 0, 		[231.238] ms
+thread : 2, 		[233.657] ms
+thread : 3, 		[234.865] ms
+thread : 0, 		[230.707] ms
+thread : 1, 		[234.763] ms
+thread : 3, 		[235.417] ms
+thread : 2, 		[241.222] ms
+[mandelbrot thread]:		[234.992] ms
+Wrote image file mandelbrot-thread.ppm
+				(3.82x speedup from 4 threads)
+[mandelbrot serial]:		[912.707] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[187.439] ms
+thread : 1, 		[193.659] ms
+thread : 4, 		[195.763] ms
+thread : 3, 		[195.976] ms
+thread : 2, 		[198.065] ms
+thread : 0, 		[188.154] ms
+thread : 3, 		[189.028] ms
+thread : 2, 		[191.641] ms
+thread : 4, 		[198.336] ms
+thread : 1, 		[214.548] ms
+thread : 1, 		[189.071] ms
+thread : 4, 		[189.143] ms
+thread : 0, 		[190.497] ms
+thread : 2, 		[191.192] ms
+thread : 3, 		[196.803] ms
+thread : 2, 		[188.532] ms
+thread : 3, 		[188.524] ms
+thread : 4, 		[189.117] ms
+thread : 0, 		[189.806] ms
+thread : 1, 		[196.534] ms
+thread : 1, 		[188.342] ms
+thread : 0, 		[193.676] ms
+thread : 3, 		[197.867] ms
+thread : 2, 		[198.559] ms
+thread : 4, 		[202.593] ms
+[mandelbrot thread]:		[196.610] ms
+Wrote image file mandelbrot-thread.ppm
+				(4.64x speedup from 5 threads)
+[mandelbrot serial]:		[458.598] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[79.170] ms
+thread : 5, 		[79.371] ms
+thread : 1, 		[79.974] ms
+thread : 4, 		[82.902] ms
+thread : 2, 		[83.507] ms
+thread : 3, 		[84.442] ms
+thread : 3, 		[78.479] ms
+thread : 4, 		[79.847] ms
+thread : 1, 		[80.872] ms
+thread : 2, 		[82.767] ms
+thread : 0, 		[86.005] ms
+thread : 5, 		[90.613] ms
+thread : 5, 		[80.076] ms
+thread : 3, 		[87.029] ms
+thread : 0, 		[100.116] ms
+thread : 1, 		[104.278] ms
+thread : 2, 		[106.480] ms
+thread : 4, 		[106.007] ms
+thread : 3, 		[78.885] ms
+thread : 2, 		[80.962] ms
+thread : 4, 		[83.325] ms
+thread : 1, 		[84.028] ms
+thread : 0, 		[85.282] ms
+thread : 5, 		[85.526] ms
+thread : 3, 		[78.869] ms
+thread : 4, 		[78.961] ms
+thread : 1, 		[79.497] ms
+thread : 2, 		[79.528] ms
+thread : 5, 		[81.085] ms
+thread : 0, 		[83.284] ms
+[mandelbrot thread]:		[83.386] ms
+Wrote image file mandelbrot-thread.ppm
+				(5.50x speedup from 6 threads)
+[mandelbrot serial]:		[645.551] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 5, 		[98.059] ms
+thread : 1, 		[99.494] ms
+thread : 0, 		[99.452] ms
+thread : 3, 		[102.505] ms
+thread : 4, 		[121.731] ms
+thread : 2, 		[143.330] ms
+thread : 6, 		[126.880] ms
+thread : 2, 		[94.679] ms
+thread : 1, 		[99.766] ms
+thread : 5, 		[103.779] ms
+thread : 3, 		[104.619] ms
+thread : 4, 		[112.502] ms
+thread : 0, 		[133.861] ms
+thread : 6, 		[140.223] ms
+thread : 2, 		[94.136] ms
+thread : 6, 		[95.839] ms
+thread : 3, 		[97.092] ms
+thread : 4, 		[100.830] ms
+thread : 1, 		[101.625] ms
+thread : 0, 		[136.998] ms
+thread : 5, 		[122.293] ms
+thread : 3, 		[94.347] ms
+thread : 2, 		[98.305] ms
+thread : 1, 		[98.842] ms
+thread : 4, 		[99.063] ms
+thread : 0, 		[99.058] ms
+thread : 6, 		[131.174] ms
+thread : 5, 		[125.084] ms
+thread : 1, 		[94.284] ms
+thread : 0, 		[94.909] ms
+thread : 3, 		[97.314] ms
+thread : 5, 		[99.662] ms
+thread : 4, 		[101.911] ms
+thread : 2, 		[134.885] ms
+thread : 6, 		[136.295] ms
+[mandelbrot thread]:		[145.928] ms
+Wrote image file mandelbrot-thread.ppm
+				(4.42x speedup from 7 threads)
+[mandelbrot serial]:		[826.359] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[105.526] ms
+thread : 3, 		[110.563] ms
+thread : 1, 		[115.264] ms
+thread : 4, 		[116.048] ms
+thread : 2, 		[153.040] ms
+thread : 7, 		[158.544] ms
+thread : 5, 		[169.054] ms
+thread : 6, 		[149.782] ms
+thread : 2, 		[107.055] ms
+thread : 1, 		[107.088] ms
+thread : 5, 		[112.059] ms
+thread : 3, 		[119.938] ms
+thread : 4, 		[121.851] ms
+thread : 0, 		[160.620] ms
+thread : 7, 		[150.777] ms
+thread : 6, 		[147.956] ms
+thread : 2, 		[104.822] ms
+thread : 3, 		[108.659] ms
+thread : 1, 		[112.812] ms
+thread : 4, 		[117.899] ms
+thread : 5, 		[133.556] ms
+thread : 0, 		[167.977] ms
+thread : 7, 		[163.899] ms
+thread : 6, 		[155.971] ms
+thread : 0, 		[108.103] ms
+thread : 5, 		[112.487] ms
+thread : 7, 		[134.928] ms
+thread : 6, 		[136.611] ms
+thread : 2, 		[166.464] ms
+thread : 4, 		[163.132] ms
+thread : 3, 		[166.027] ms
+thread : 1, 		[179.752] ms
+thread : 2, 		[105.360] ms
+thread : 0, 		[105.442] ms
+thread : 3, 		[110.297] ms
+thread : 5, 		[114.006] ms
+thread : 4, 		[153.308] ms
+thread : 1, 		[153.801] ms
+thread : 7, 		[143.560] ms
+thread : 6, 		[148.824] ms
+[mandelbrot thread]:		[168.559] ms
+Wrote image file mandelbrot-thread.ppm
+				(4.90x speedup from 8 threads)
+[mandelbrot serial]:		[922.176] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[105.436] ms
+thread : 5, 		[108.035] ms
+thread : 1, 		[109.680] ms
+thread : 3, 		[112.819] ms
+thread : 4, 		[159.604] ms
+thread : 8, 		[148.243] ms
+thread : 2, 		[178.378] ms
+thread : 6, 		[166.036] ms
+thread : 7, 		[168.125] ms
+thread : 1, 		[104.878] ms
+thread : 3, 		[105.022] ms
+thread : 4, 		[105.034] ms
+thread : 5, 		[108.413] ms
+thread : 2, 		[151.733] ms
+thread : 0, 		[153.281] ms
+thread : 8, 		[156.558] ms
+thread : 7, 		[150.558] ms
+thread : 6, 		[145.867] ms
+thread : 1, 		[106.619] ms
+thread : 5, 		[117.494] ms
+thread : 3, 		[118.045] ms
+thread : 4, 		[143.885] ms
+thread : 2, 		[158.787] ms
+thread : 0, 		[176.455] ms
+thread : 8, 		[146.859] ms
+thread : 7, 		[164.787] ms
+thread : 6, 		[157.759] ms
+thread : 1, 		[107.459] ms
+thread : 3, 		[111.668] ms
+thread : 5, 		[113.446] ms
+thread : 0, 		[153.604] ms
+thread : 4, 		[158.390] ms
+thread : 7, 		[140.579] ms
+thread : 2, 		[165.394] ms
+thread : 8, 		[155.974] ms
+thread : 6, 		[156.963] ms
+thread : 1, 		[105.364] ms
+thread : 2, 		[105.613] ms
+thread : 3, 		[106.695] ms
+thread : 5, 		[113.795] ms
+thread : 4, 		[149.907] ms
+thread : 0, 		[164.737] ms
+thread : 8, 		[149.775] ms
+thread : 7, 		[161.821] ms
+thread : 6, 		[147.815] ms
+[mandelbrot thread]:		[174.301] ms
+Wrote image file mandelbrot-thread.ppm
+				(5.29x speedup from 9 threads)
+[mandelbrot serial]:		[915.006] ms
+Wrote image file mandelbrot-serial.ppm
+thread : 0, 		[94.060] ms
+thread : 4, 		[96.814] ms
+thread : 1, 		[107.678] ms
+thread : 3, 		[133.674] ms
+thread : 9, 		[140.430] ms
+thread : 8, 		[146.883] ms
+thread : 5, 		[136.551] ms
+thread : 6, 		[138.265] ms
+thread : 2, 		[173.164] ms
+thread : 7, 		[144.377] ms
+thread : 2, 		[94.230] ms
+thread : 5, 		[94.658] ms
+thread : 1, 		[95.430] ms
+thread : 3, 		[96.060] ms
+thread : 4, 		[140.065] ms
+thread : 9, 		[119.912] ms
+thread : 0, 		[146.285] ms
+thread : 8, 		[138.357] ms
+thread : 7, 		[128.171] ms
+thread : 6, 		[101.640] ms
+thread : 1, 		[94.524] ms
+thread : 5, 		[95.704] ms
+thread : 3, 		[120.609] ms
+thread : 2, 		[138.402] ms
+thread : 4, 		[150.637] ms
+thread : 9, 		[137.251] ms
+thread : 6, 		[134.185] ms
+thread : 8, 		[156.697] ms
+thread : 0, 		[172.494] ms
+thread : 7, 		[168.823] ms
+thread : 4, 		[95.828] ms
+thread : 2, 		[121.843] ms
+thread : 5, 		[119.110] ms
+thread : 0, 		[163.212] ms
+thread : 1, 		[164.653] ms
+thread : 9, 		[140.017] ms
+thread : 6, 		[153.178] ms
+thread : 8, 		[152.144] ms
+thread : 3, 		[181.069] ms
+thread : 7, 		[182.467] ms
+thread : 2, 		[94.266] ms
+thread : 4, 		[103.866] ms
+thread : 5, 		[119.016] ms
+thread : 3, 		[150.863] ms
+thread : 1, 		[155.826] ms
+thread : 8, 		[129.214] ms
+thread : 0, 		[163.693] ms
+thread : 9, 		[152.640] ms
+thread : 6, 		[122.626] ms
+thread : 7, 		[166.339] ms
+[mandelbrot thread]:		[177.220] ms
+Wrote image file mandelbrot-thread.ppm
+				(5.16x speedup from 10 threads)
