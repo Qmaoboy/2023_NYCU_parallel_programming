@@ -10,7 +10,8 @@
 #include <omp.h>
 #include <csv2/reader.hpp>
 #include <csv2/writer.hpp>
-
+#include <sstream>
+#include <chrono>
 using namespace std;
 using namespace csv2;
 
@@ -161,6 +162,15 @@ string fetchHTML(const string& url) {
     curl = curl_easy_init();
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        struct curl_slist* headers = NULL;
+        headers = curl_slist_append(headers, "User-Agent: Mozilla/5.0");
+        headers = curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+        // Add the "18 years old" token header
+        headers = curl_slist_append(headers, "Cookie: _gid=GA1.2.1254144763.1704695744; _gat=1; over18=1; _ga=GA1.1.925644845.1704695744; _ga_DZ6Y3BY9GW=GS1.1.1704695743.1.1.1704695745.0.0.0");
+
+        // Add more headers if needed
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
@@ -201,18 +211,34 @@ ArticleData getArticle(string articleUrl) {
     return article;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    //執行時間
+    auto start = std::chrono::high_resolution_clock::now();
+    int numThreads = 1;
+    if (argc < 2) {
+        cout << "Usage: " << argv[0] << " <num_threads>" << endl;
+        return 1;
+    }
+    numThreads=atoi(argv[1]);
+    cout << "Consumer Thread "<< numThreads<< endl;
     vector<string> urls;
-    omp_set_num_threads(4);
+    omp_set_num_threads(numThreads);
 #pragma omp parallel for
     for (int i = 4000; i < 4001; i++) {
         string pageUrl = "https://www.ptt.cc/bbs/HatePolitics/index" + to_string(i) + ".html";
         vector<string> pageUrls = getUrls(pageUrl);
         urls.insert(urls.end(), pageUrls.begin(), pageUrls.end());
     }
-  
-
-
+    for (int i = 950; i < 951; i++) {
+        string pageUrl = "https://www.ptt.cc/bbs/politics/index" + to_string(i) + ".html";
+        vector<string> pageUrls = getUrls(pageUrl);
+        urls.insert(urls.end(), pageUrls.begin(), pageUrls.end());
+    }
+    for (int i = 39058; i < 39059; i++) {
+        string pageUrl = "https://www.ptt.cc/bbs/Gossiping/index" + to_string(i) + ".html";
+        vector<string> pageUrls = getUrls(pageUrl);
+        urls.insert(urls.end(), pageUrls.begin(), pageUrls.end());
+    }
     //for (const std::string& title : urls) {
     //    std::cout << title << std::endl;
     //}
@@ -223,28 +249,32 @@ int main() {
         std::cout << "Thread " << omp_get_thread_num() << " processing " << urls[i] << std::endl;
         string url = urls[i];
 
+
         // 创建文件输出流
-        std::ofstream stream("foo.csv");
+        std::ofstream stream("foo.csv", std::ios_base::app);
         // 创建 csv2 的 Writer 对象
         Writer<delimiter<','>> writer(stream);
+
         ArticleData article = getArticle(url);
         cout << article.title << endl;
+
         std::vector<std::vector<std::string>> rows =
         {
-            { article.title, article.time, article.content }
+           { article.title, article.time, article.content }
+
         };
         writer.write_rows(rows);
         //// 写入头部
-        //writer.write_row("Column1", "Column2", "Column3");
-
-        //// 写入数据行
-        //writer.write_row("Data1", "Data2", "Data3");
-        //writer.write_row("Data4", "Data5", "Data6");
-
-
-        /*writer.write_row({ article.title, article.time, article.content });*/
         stream.close();
     }
+
+    // 获取结束时间点
+    auto finish = std::chrono::high_resolution_clock::now();
+    // 计算经过的时间
+    std::chrono::duration<double> elapsed = (finish - start)/60;
+    // 输出结果
+    std::cout << "Elapsed time: " << elapsed.count() << " mins" << std::endl;
+
 
     return 0;
 }

@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/qmao/Documents/2023_NYCU_parallel_programming/final_project",
-      "program": "/home/qmao/Documents/2023_NYCU_parallel_programming/final_project/build/Debug/outDebug",
+      "cwd": "/home/qmao/Documents/2023_NYCU_parallel_programming/HW6",
+      "program": "/home/qmao/Documents/2023_NYCU_parallel_programming/HW6/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

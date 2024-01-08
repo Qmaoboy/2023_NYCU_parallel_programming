@@ -31,10 +31,5 @@ void hostFE(int filterWidth, float *filter, int imageHeight, int imageWidth,
     clEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, &global_work_size, &local_work_size, 0, NULL, NULL);
     clEnqueueReadBuffer(commandQueue, outputImgMem, CL_TRUE, 0, imageSize*sizeof(float), outputImage, 0, NULL, NULL);
 
-    // release opencl object
-    // status = clReleaseCommandQueue(commandQueue);
-    // status = clReleaseMemObject(inputImgMem);
-    // status = clReleaseMemObject(outputImgMem);
-    // status = clReleaseMemObject(filterMem);
-    // status = clReleaseKernel(kernel);
+    // May need to release opencl object
 }

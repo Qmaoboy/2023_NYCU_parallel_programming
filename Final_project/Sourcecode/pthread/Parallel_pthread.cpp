@@ -7,16 +7,23 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <pthread.h>
 #include <omp.h>
 #include <csv2/reader.hpp>
 #include <csv2/writer.hpp>
-
+#include <queue>
+#include <sstream>
+#include <chrono>
 using namespace std;
 using namespace csv2;
+bool terminationSignal = false;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+std::queue<std::string> workQueue;
 
 class ArticleData {
 public:
-    std::string author;sa_family_t
+    std::string author;
     std::string title;
     std::string time;
     std::string band;
@@ -26,25 +33,21 @@ public:
         : author(author), title(title), time(time), band(band), content(content) {}
 };
 
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 用於保護共享資源的 mutex
 
 // 使用libxml2解析HTML並執行XPath查詢，將結果存儲在vector中
 std::vector<std::string> findTitles(const std::string& html) {
     std::vector<std::string> titles;
     htmlDocPtr doc = htmlReadMemory(html.c_str(), html.size(), NULL, NULL, HTML_PARSE_RECOVER | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING);
-
     if (doc == NULL) {
         std::cerr << "Error parsing HTML document." << std::endl;
         return titles;
     }
-
     xmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);
     if (xpathCtx == NULL) {
         std::cerr << "Error creating XPath context." << std::endl;
         xmlFreeDoc(doc);
         return titles;
     }
-
     xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((const xmlChar*)"//div[@class='title']/a", xpathCtx);
     if (xpathObj == NULL) {
         std::cerr << "Error evaluating XPath expression." << std::endl;
@@ -52,7 +55,6 @@ std::vector<std::string> findTitles(const std::string& html) {
         xmlFreeDoc(doc);
         return titles;
     }
-
     xmlNodeSetPtr nodes = xpathObj->nodesetval;
     if (nodes != NULL) {
         for (int i = 0; i < nodes->nodeNr; ++i) {
@@ -68,14 +70,11 @@ std::vector<std::string> findTitles(const std::string& html) {
             }
         }
     }
-
     xmlXPathFreeObject(xpathObj);
     xmlXPathFreeContext(xpathCtx);
     xmlFreeDoc(doc);
-
     return titles;
 }
-
 ArticleData findArticleData(const std::string& html) {
     std::string author, title, time, band, content;
     htmlDocPtr doc = htmlReadMemory(html.c_str(), html.size(), NULL, NULL, HTML_PARSE_RECOVER | HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING);
@@ -91,7 +90,6 @@ ArticleData findArticleData(const std::string& html) {
         xmlFreeDoc(doc);
         return ArticleData("", "", "", "", "");
     }
-
     // Fetching metadata
     xmlXPathObjectPtr metaObj = xmlXPathEvalExpression((const xmlChar*)"//span[@class='article-meta-value']", xpathCtx);
     if (metaObj != NULL) {
@@ -114,7 +112,6 @@ ArticleData findArticleData(const std::string& html) {
         }
         xmlXPathFreeObject(metaObj);
     }
-
     // Fetching main content
     xmlXPathObjectPtr contentObj = xmlXPathEvalExpression((const xmlChar*)"//*[@id='main-content']", xpathCtx);
     if (contentObj != NULL) {
@@ -131,10 +128,8 @@ ArticleData findArticleData(const std::string& html) {
         }
         xmlXPathFreeObject(contentObj);
     }
-
     xmlXPathFreeContext(xpathCtx);
     xmlFreeDoc(doc);
-
     return ArticleData(author, title, time, band, content);
 }
 
@@ -159,6 +154,16 @@ string fetchHTML(const string& url) {
     curl = curl_easy_init();
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+         // Add custom headers
+         struct curl_slist* headers = NULL;
+        headers = curl_slist_append(headers, "User-Agent: Mozilla/5.0");
+        headers = curl_slist_append(headers, "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+        // Add the "18 years old" token header
+        headers = curl_slist_append(headers, "Cookie: _gid=GA1.2.1254144763.1704695744; _gat=1; over18=1; _ga=GA1.1.925644845.1704695744; _ga_DZ6Y3BY9GW=GS1.1.1704695743.1.1.1704695745.0.0.0");
+
+        // Add more headers if needed
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
@@ -188,61 +193,135 @@ ArticleData getArticle(string articleUrl) {
     ArticleData article = findArticleData(html);
     return article;
 }
+// Function to fetch URLs and put them into the queue (producer)
 
-// 線程函數，處理每個 URL
-void* processUrl(void* arg) {
-    string url = *(static_cast<string*>(arg));
+void* producerHatePolitics(void* arg) {
 
-    // ...
+    // Hate Politics
+    for (int i = 1; i < 4001; i++) {
+        string pageUrl = "https://www.ptt.cc/bbs/HatePolitics/index" + to_string(i) + ".html";
+        vector<string> pageUrls = getUrls(pageUrl);
 
-    // 進行爬蟲並寫入 CSV
-    pthread_mutex_lock(&mutex);
-    string fileName = "ff_final.csv";
-    ofstream stream(fileName, std::ios_base::app); // 開啟檔案以追加模式寫入
-    Writer<delimiter<','>> writer(stream);
-    ArticleData article = getArticle(url);
-    cout << article.title << endl;
-    std::vector<std::vector<std::string>> rows = { { article.title, article.time, article.content } };
-    writer.write_rows(rows);
-    stream.close();
-    pthread_mutex_unlock(&mutex);
+        pthread_mutex_lock(&mutex);
+        for (const auto& url : pageUrls) {
+            workQueue.push(url);
+        }
+        pthread_cond_signal(&cond); // Signal consumers that there is work to do
+        pthread_mutex_unlock(&mutex);
+    }
+    return NULL;
+}
+
+void* producerPolitics(void* arg) {
+
+    // Hate Politics
+    for (int i = 1; i < 951; i++) {
+        string pageUrl = "https://www.ptt.cc/bbs/politics/index" + to_string(i) + ".html";
+        vector<string> pageUrls = getUrls(pageUrl);
+
+        pthread_mutex_lock(&mutex);
+        for (const auto& url : pageUrls) {
+            workQueue.push(url);
+        }
+        pthread_cond_signal(&cond); // Signal consumers that there is work to do
+        pthread_mutex_unlock(&mutex);
+    }
+    return NULL;
+}
+void* producergossip(void* arg) {
+
+    // Hate Politics
+    for (int i = 1; i < 39059; i++) {
+        string pageUrl = "https://www.ptt.cc/bbs/Gossiping/index" + to_string(i) + ".html";
+        vector<string> pageUrls = getUrls(pageUrl);
+
+        pthread_mutex_lock(&mutex);
+        for (const auto& url : pageUrls) {
+            workQueue.push(url);
+        }
+        pthread_cond_signal(&cond); // Signal consumers that there is work to do
+        pthread_mutex_unlock(&mutex);
+    }
+    return NULL;
+}
+// Function to process URLs and write to the CSV file (consumer)
+void* consumer(void* arg) {
+    while (true) {
+        pthread_mutex_lock(&mutex);
+        while (workQueue.empty()) {
+            // Wait for work to be available or check for termination signal
+            if (terminationSignal) {
+                pthread_mutex_unlock(&mutex);
+                return NULL; // Terminate thread
+            }
+            pthread_cond_wait(&cond, &mutex);
+        }
+
+        string url = workQueue.front();
+        workQueue.pop();
+        pthread_mutex_unlock(&mutex);
+
+        // Process the URL and write to CSV
+        string fileName = "ff_final.csv";
+        ArticleData article = getArticle(url);
+        cout << article.title << endl;
+
+        std::vector<std::vector<std::string>> rows = { { article.title, article.time, article.content } };
+        ofstream stream(fileName, std::ios_base::app);
+        Writer<delimiter<','>> writer(stream);
+        writer.write_rows(rows);
+        stream.close();
+    }
 
     return NULL;
 }
 
-
-
-
-
-int main() {
-    vector<string> urls;
-
-    // ...
-    for (int i = 4000; i < 4001; i++) {
-        string pageUrl = "https://www.ptt.cc/bbs/HatePolitics/index" + to_string(i) + ".html";
-        vector<string> pageUrls = getUrls(pageUrl);
-        urls.insert(urls.end(), pageUrls.begin(), pageUrls.end());
+int main(int argc, char* argv[]) {
+    // double startTime = CycleTimer::currentSeconds();
+    // vector<string> urls;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+    int numConsumerThreads = 1;
+    if (argc < 2) {
+        cout << "Usage: " << argv[0] << " <num_threads>" << endl;
+        return 1;
     }
-
-    // 創建一個 pthread 數組
-    pthread_t* threads = new pthread_t[urls.size()];
-
-    // 初始化 mutex
+    numConsumerThreads=atoi(argv[1]);
+    cout << "Consumer Thread "<< numConsumerThreads<< endl;
+    pthread_t producerThread[3], *consumerThreads;
     pthread_mutex_init(&mutex, NULL);
+    pthread_cond_init(&cond, NULL);
 
-    // 創建每個 URL 的線程
-    for (size_t i = 0; i < urls.size(); ++i) {
-        pthread_create(&threads[i], NULL, processUrl, &urls[i]);
+    pthread_create(&producerThread[0], NULL, producerHatePolitics, NULL);
+    pthread_create(&producerThread[1], NULL, producerPolitics, NULL);
+    pthread_create(&producerThread[2], NULL, producergossip, NULL);
+
+    consumerThreads = new pthread_t[numConsumerThreads];
+    for (int i = 0; i < numConsumerThreads; ++i) {
+        pthread_create(&consumerThreads[i], NULL, consumer, NULL);
     }
 
-    // 等待每個線程完成
-    for (size_t i = 0; i < urls.size(); ++i) {
-        pthread_join(threads[i], NULL);
+    // Wait for producer and consumer threads to finish
+      for (int i = 0; i < 3; ++i) {
+        pthread_join(producerThread[i], NULL);
+    }
+    pthread_mutex_lock(&mutex);
+    terminationSignal = true;
+    pthread_cond_broadcast(&cond);
+    pthread_mutex_unlock(&mutex);
+    for (int i = 0; i < numConsumerThreads; ++i) {
+        pthread_join(consumerThreads[i], NULL);
     }
 
-    // 釋放資源
-    delete[] threads;
+    // Cleanup
+    delete[] consumerThreads;
     pthread_mutex_destroy(&mutex);
-
+    pthread_cond_destroy(&cond);
+      // 获取结束时间点
+    auto finish = std::chrono::high_resolution_clock::now();
+    // 计算经过的时间
+    std::chrono::duration<double> elapsed = (finish - start)/60;
+    // 输出结果
+    std::cout << "Elapsed time: " << elapsed.count() << " mins" << std::endl;
     return 0;
 }
